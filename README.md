@@ -35,6 +35,8 @@ The api will return a 400 error in the following cases:
 2.) If there are no files <br>
 3.) If any file being uploaded is not a dcm file <br>
 
+Any other issue that arises will return a 500
+
 # Testing
 
 Unit tests exist for most classes. The service class ran into some weird race issue. I think previous go routines that were created are affecting the test result becuase the issue only arises when running the test as part of the whole test suite. Running them individually works fine. 
