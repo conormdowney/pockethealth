@@ -13,7 +13,7 @@ PNG's are stored at C:\temp\pngs
 Clone the project and run main.go
 The server will start up and listen on localhost:3000
 
-#What to expext
+# What to expext
 
 After a file has been sent to the service it will do the following:
 
@@ -35,7 +35,7 @@ The api will return a 400 error in the following cases:
 2.) If there are no files <br>
 3.) If any file being uploaded is not a dcm file <br>
 
-#Testing
+# Testing
 
 Unit tests exist for most classes. The service class ran into some weird race issue. I think previous go routines that were created are affecting the test result becuase the issue only arises when running the test as part of the whole test suite. Running them individually works fine. 
 
