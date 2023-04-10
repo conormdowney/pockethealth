@@ -62,7 +62,7 @@ passing 5 files to the endpoint, the result is:
 
 Files stored on the filesystem would need to be in a place that is accessible form the internet through a url, or better yet, in something like S3 in AWS or the Azure equivalent. I stored them in a folder not accessible but since there is no front end component this is really just demonstrative of what would be returned.
 
-The .dcm file name maps to an array of strings. The images come from the parse dcms frames property. In the samples I used there was only a single frame but it is an array so I assume multiple could exist. Sending back an arrya allows for multiple images frames for a single file.
+The .dcm file name maps to an array of strings. The images come from the parsed dcms frames property. In the samples I used there was only a single frame but it is an array so I assume multiple could exist. Sending back an arrya allows for multiple images frames for a single file.
 
 # Errors
 
