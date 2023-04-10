@@ -10,6 +10,7 @@ The server will start up and listen on localhost:3000
 There are two endpoints:
 
 1.) localhost:3000/upload?tag=<tagNumber>....
+
 2.) localhost:3000/converttopng
 
 # upload
