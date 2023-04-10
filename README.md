@@ -8,13 +8,14 @@ localhost:3000/upload?tag=0400,0565&tag=0010,0020
 
 There is no front end component to the project, I just used Postman to test.
 
+Add the files to the body with the key "files"
+
 Uploaded files are stored at C:\temp\uploads 
 
 PNG's are stored at C:\temp\pngs
 
 Clone the project and run main.go <br>
 The server will start up and listen on localhost:3000
-Add the files to the body with the key "files"
 
 # What to expect
 
