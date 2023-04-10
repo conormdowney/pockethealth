@@ -10,19 +10,23 @@ import (
 	"path/filepath"
 
 	"github.com/gocraft/web"
+	"github.com/rs/zerolog/log"
 )
 
 // HandleUpload handles the case where upload is called.
 func HandleUpload(rw web.ResponseWriter, req *web.Request) {
+	log.Info().Msg("In HandleUpload")
 	files, err := validateRequest(req)
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusBadRequest)
+		log.Err(err).Msg("Invalid Request")
 		return
 	}
 	// pass in the files and the tags to search for to the upload service
 	elems, err := service.Upload(files, req.URL.Query()["tag"])
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
+		log.Err(err).Msg("Internal Server Error")
 		return
 	}
 
@@ -31,16 +35,18 @@ func HandleUpload(rw web.ResponseWriter, req *web.Request) {
 
 // HandleConvertToPng handles the case where upload is called.
 func HandleConvertToPng(rw web.ResponseWriter, req *web.Request) {
-
+	log.Info().Msg("In HandleConvertToPng")
 	files, err := validateRequest(req)
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusBadRequest)
+		log.Err(err).Msg("Invalid Request")
 		return
 	}
 
 	pngs, err := service.ConvertToPng(files)
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
+		log.Err(err).Msg("Internal Server Error")
 		return
 	}
 

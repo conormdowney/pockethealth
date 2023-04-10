@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
+	"github.com/rs/zerolog/log"
 	"github.com/suyashkumar/dicom"
 	"github.com/suyashkumar/dicom/pkg/tag"
 )
@@ -31,6 +32,7 @@ func ParseFile(fileName string) (*dicom.Dataset, error) {
 func GetTags(queryTags []string, dataset *dicom.Dataset) (map[string]*dicom.Element, error) {
 	tagMap := make(map[string]*dicom.Element)
 	for _, splitTag := range queryTags {
+		log.Info().Msg(fmt.Sprintf("Searching for tag %s", splitTag))
 		// create a tag for use in the FindElementByTagNested function
 		tag, err := CreateTag(splitTag)
 		if err != nil {
@@ -41,12 +43,14 @@ func GetTags(queryTags []string, dataset *dicom.Dataset) (map[string]*dicom.Elem
 		if err != nil {
 			// if the error is that the tag could not be found, just continue on to the next item
 			if strings.Contains(err.Error(), "element not found") {
+				log.Info().Msg(fmt.Sprintf("%s not found", splitTag))
 				continue
 			} else {
 				return nil, err
 			}
 		}
 
+		log.Info().Msg(fmt.Sprintf("Found data for tag %v", elem))
 		tagMap[splitTag] = elem
 	}
 
@@ -55,6 +59,7 @@ func GetTags(queryTags []string, dataset *dicom.Dataset) (map[string]*dicom.Elem
 
 // ConvertToPng converts a dicom image to png nd stores it locally
 func ConvertToPng(dataset dicom.Dataset, uuid uuid.UUID) ([]string, error) {
+	log.Info().Msg(fmt.Sprintf("converting %s.dcm to png", uuid))
 	// During unit tests the images are stored in a tests folder inside the pngs folder.
 	// This is to allow the tests to remove the images when they are cleaning up
 	pngDir := "C:/temp/pngs"

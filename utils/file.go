@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 
 	"github.com/google/uuid"
+	"github.com/rs/zerolog/log"
 )
 
 // UploadFile uploads a file and returns the file name
@@ -39,5 +40,6 @@ func UploadFile(file multipart.File, fileHeader *multipart.FileHeader, uuid uuid
 		return "", err
 	}
 
+	log.Info().Msg(fmt.Sprintf("%s uploaded to %s", fileHeader.Filename, fileName))
 	return fileName, nil
 }

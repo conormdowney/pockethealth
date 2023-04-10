@@ -3,10 +3,12 @@ package service
 import (
 	"conordowney/pockethealth/dicom_wrapper"
 	"conordowney/pockethealth/utils"
+	"fmt"
 	"mime/multipart"
 	"sync"
 
 	"github.com/google/uuid"
+	"github.com/rs/zerolog/log"
 	"github.com/suyashkumar/dicom"
 )
 
@@ -54,6 +56,7 @@ func uploadFile(file multipart.File, fileHeader *multipart.FileHeader, tags []st
 	// If there are any tags get the data associated to them tags
 	var elem map[string]*dicom.Element
 	if len(tags) > 0 {
+		log.Info().Msg(fmt.Sprintf("Searching for tags %v", tags))
 		// Get the data from the dcm file
 		dataset, err := dicom_wrapper.ParseFile(fileName)
 		if err != nil {
@@ -117,10 +120,11 @@ func convertFile(file multipart.File, fileHeader *multipart.FileHeader) ([]strin
 	}
 
 	// Convert the image from the dicom to a png
-	filenames, err := dicom_wrapper.ConvertToPng(*dataset, uuid)
+	fileNames, err := dicom_wrapper.ConvertToPng(*dataset, uuid)
 	if err != nil {
 		return nil, err
 	}
+	log.Info().Msg(fmt.Sprintf("%s converted to %v", fileHeader.Filename, fileNames))
 
-	return filenames, nil
+	return fileNames, nil
 }
