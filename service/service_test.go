@@ -1,5 +1,18 @@
 package service_test
 
+// import (
+// 	"bytes"
+// 	"conordowney/pockethealth/service"
+// 	"fmt"
+// 	"io"
+// 	"mime/multipart"
+// 	"net/http"
+// 	"os"
+// 	"testing"
+
+// 	"github.com/stretchr/testify/assert"
+// )
+
 // NOTE: Ran into a weird, maybe, race condition of some sort. When i ran the tests individually
 // they worked fine. But when i ran them with the rest of the tests extra files were being added
 // to the folder. Its possible some earlier goroutine was messing up the test run. I would
@@ -49,11 +62,10 @@ package service_test
 
 // 	dirFiles, _ := os.ReadDir("C:\\temp\\pngs\\tests")
 // 	t.Log(dirFiles)
-// 	time.Sleep(100 * time.Second)
-// 	assert.Equal(t, 1, len(dirFiles), fmt.Sprintf("%s and %s", dirFiles[0].Name(), dirFiles[1].Name()))
+// 	assert.Equal(t, 1, len(dirFiles), "Incorrect number of files in pngs test directory")
 // 	uploadFiles, _ := os.ReadDir("C:\\temp\\uploads\\tests")
 // 	t.Log(uploadFiles)
-// 	assert.Equal(t, 1, len(uploadFiles), fmt.Sprintf("%v", uploadFiles))
+// 	assert.Equal(t, 1, len(uploadFiles), "Incorrect number of files in uploads test directory")
 // }
 
 // func TestUploadMultiple(t *testing.T) {
@@ -110,4 +122,4 @@ package service_test
 // 	assert.Equal(t, 5, len(uploadFiles), "Incorrect number of files in uploads test directory")
 // }
 
-// test checking the returned element
+// // test checking the returned element

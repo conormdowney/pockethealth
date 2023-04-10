@@ -15,5 +15,7 @@ func main() {
 	// and can include multiple files and tags
 	router.Post("/upload/", handler.HandleUpload)
 
+	router.Post("/converttopng/", handler.HandleConvertToPng)
+
 	http.ListenAndServe("localhost:3000", router)
 }

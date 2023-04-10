@@ -2,6 +2,7 @@ package dicom_wrapper_test
 
 import (
 	"conordowney/pockethealth/dicom_wrapper"
+	"os"
 	"testing"
 
 	"github.com/google/uuid"
@@ -50,10 +51,16 @@ func TestGetTagErrors(t *testing.T) {
 }
 
 func TestConvertToPng(t *testing.T) {
+	os.Setenv("TESTING", "true")
+	defer func() {
+		os.Setenv("TESTING", "false")
+		os.RemoveAll("C:/temp/pngs/tests")
+	}()
 	dataset, err := dicom_wrapper.ParseFile("../test_files/1.dcm")
 	assert.Nil(t, err)
 
 	uuid := uuid.New()
-	err = dicom_wrapper.ConvertToPng(*dataset, uuid)
+	filenames, err := dicom_wrapper.ConvertToPng(*dataset, uuid)
 	assert.Nil(t, err)
+	assert.Equal(t, 1, len(filenames), "Wrong number of files returned")
 }

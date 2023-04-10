@@ -54,46 +54,49 @@ func GetTags(queryTags []string, dataset *dicom.Dataset) (map[string]*dicom.Elem
 }
 
 // ConvertToPng converts a dicom image to png nd stores it locally
-func ConvertToPng(dataset dicom.Dataset, uuid uuid.UUID) error {
+func ConvertToPng(dataset dicom.Dataset, uuid uuid.UUID) ([]string, error) {
 	// During unit tests the images are stored in a tests folder inside the pngs folder.
 	// This is to allow the tests to remove the images when they are cleaning up
-	pngDir := "C:\\temp\\pngs"
+	pngDir := "C:/temp/pngs"
 	// When running tests, store the items in a tests folder that should be
 	// deleted after each test
 	if os.Getenv("TESTING") == "true" {
-		pngDir += "\\tests"
+		pngDir += "/tests"
 	}
 	err := os.MkdirAll(pngDir, os.ModePerm)
 	if err != nil {
-		return err
+		return nil, err
 	}
+	var filenames []string
 	// Find the data related to images
 	pixelDataElement, _ := dataset.FindElementByTag(tag.PixelData)
 	pixelDataInfo := dicom.MustGetPixelDataInfo(pixelDataElement.Value)
 	for i, fr := range pixelDataInfo.Frames {
 		img, err := fr.GetImage()
 		if err != nil {
-			return err
+			return nil, err
 		}
 		// The files used in this assignment only have single frames, but in the case where
 		// there are multiple the files will be stored as <uuid>_0.
 		// Ideally this path, or in a cloud setting the S3 (or whatever Azures equivalent is)
 		// would be stored in a database in an entry for the image
-		f, err := os.Create(fmt.Sprintf("%s\\%s_%d.png", pngDir, uuid, i))
+		filename := fmt.Sprintf("%s/%s_%d.png", pngDir, uuid, i)
+		filenames = append(filenames, filename)
+		f, err := os.Create(filename)
 		if err != nil {
-			return err
+			return nil, err
 		}
 		err = png.Encode(f, img)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
 		err = f.Close()
 		if err != nil {
-			return err
+			return nil, err
 		}
 	}
-	return nil
+	return filenames, nil
 }
 
 // CreateTag creates a tag from the codes passed in as query parameters

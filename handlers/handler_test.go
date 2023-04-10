@@ -19,8 +19,8 @@ func TestHandleUpload(t *testing.T) {
 	os.Setenv("TESTING", "true")
 	defer func() {
 		os.Setenv("TESTING", "false")
-		os.RemoveAll("C:\\temp\\pngs\\tests")
-		os.RemoveAll("C:\\temp\\uploads\\tests")
+		os.RemoveAll("C:/temp/pngs/tests")
+		os.RemoveAll("C:/temp/uploads/tests")
 	}()
 	router := router.NewRouter()
 	router.Post("/upload/", HandleUpload)
@@ -72,8 +72,8 @@ func TestHandleUploadWithoutMultipartForm(t *testing.T) {
 	os.Setenv("TESTING", "true")
 	defer func() {
 		os.Setenv("TESTING", "false")
-		os.RemoveAll("C:\\temp\\pngs\\tests")
-		os.RemoveAll("C:\\temp\\uploads\\tests")
+		os.RemoveAll("C:/temp/pngs/tests")
+		os.RemoveAll("C:/temp/uploads/tests")
 	}()
 	router := router.NewRouter()
 	router.Post("/upload/", HandleUpload)
@@ -90,8 +90,8 @@ func TestHandleUploadWithFilesInWrongAttribute(t *testing.T) {
 	os.Setenv("TESTING", "true")
 	defer func() {
 		os.Setenv("TESTING", "false")
-		os.RemoveAll("C:\\temp\\pngs\\tests")
-		os.RemoveAll("C:\\temp\\uploads\\tests")
+		os.RemoveAll("C:/temp/pngs/tests")
+		os.RemoveAll("C:/temp/uploads/tests")
 	}()
 	router := router.NewRouter()
 	router.Post("/upload/", HandleUpload)
@@ -132,8 +132,8 @@ func TestHandleUploadWrongFileType(t *testing.T) {
 	os.Setenv("TESTING", "true")
 	defer func() {
 		os.Setenv("TESTING", "false")
-		os.RemoveAll("C:\\temp\\pngs\\tests")
-		os.RemoveAll("C:\\temp\\uploads\\tests")
+		os.RemoveAll("C:/temp/pngs/tests")
+		os.RemoveAll("C:/temp/uploads/tests")
 	}()
 	router := router.NewRouter()
 	router.Post("/upload/", HandleUpload)
@@ -163,6 +163,73 @@ func TestHandleUploadWrongFileType(t *testing.T) {
 
 	request, _ := http.NewRequest("POST", "/upload", body)
 	request.Header.Add("content-type", mw.FormDataContentType())
+
+	writer := httptest.NewRecorder()
+	router.ServeHTTP(writer, request)
+
+	assert.Equal(t, http.StatusBadRequest, writer.Code)
+}
+
+func TestHandleConvertToPng(t *testing.T) {
+	os.Setenv("TESTING", "true")
+	defer func() {
+		os.Setenv("TESTING", "false")
+		os.RemoveAll("C:/temp/pngs/tests")
+		os.RemoveAll("C:/temp/uploads/tests")
+	}()
+	router := router.NewRouter()
+	router.Post("/converttopng/", HandleConvertToPng)
+
+	filePath := "../test_files/1.dcm"
+	fieldName := "files"
+	body := new(bytes.Buffer)
+
+	mw := multipart.NewWriter(body)
+
+	file, err := os.Open(filePath)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	w, err := mw.CreateFormFile(fieldName, filePath)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if _, err := io.Copy(w, file); err != nil {
+		t.Fatal(err)
+	}
+
+	// close the writer before making the request
+	mw.Close()
+
+	request, _ := http.NewRequest("POST", "/converttopng", body)
+	request.Header.Add("content-type", mw.FormDataContentType())
+
+	writer := httptest.NewRecorder()
+	router.ServeHTTP(writer, request)
+
+	err = request.ParseMultipartForm(200000)
+	assert.Nil(t, err)
+	formData := request.MultipartForm
+
+	files := formData.File["files"]
+	fmt.Print(len(files))
+
+	assert.Equal(t, http.StatusOK, writer.Code)
+}
+
+func TestHandleConvertToPngFailValidation(t *testing.T) {
+	os.Setenv("TESTING", "true")
+	defer func() {
+		os.Setenv("TESTING", "false")
+		os.RemoveAll("C:/temp/pngs/tests")
+		os.RemoveAll("C:/temp/uploads/tests")
+	}()
+	router := router.NewRouter()
+	router.Post("/converttopng/", HandleConvertToPng)
+
+	request, _ := http.NewRequest("POST", "/converttopng", nil)
 
 	writer := httptest.NewRecorder()
 	router.ServeHTTP(writer, request)
