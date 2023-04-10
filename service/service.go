@@ -10,8 +10,7 @@ import (
 	"github.com/suyashkumar/dicom"
 )
 
-// Upload executes a go routine per file to do
-// the upload, tag retrieval and png conversion
+// Upload executes a go routine per file to do the upload and tag data retrieval
 func Upload(files []*multipart.FileHeader, tags []string) (map[string]map[string]*dicom.Element, error) {
 	var wg sync.WaitGroup
 	// a map to hold the result of each go routine by the name of the file
@@ -51,14 +50,16 @@ func uploadFile(file multipart.File, fileHeader *multipart.FileHeader, tags []st
 	if err != nil {
 		return nil, err
 	}
-	// Get the data from the dcm file
-	dataset, err := dicom_wrapper.ParseFile(fileName)
-	if err != nil {
-		return nil, err
-	}
+
 	// If there are any tags get the data associated to them tags
 	var elem map[string]*dicom.Element
 	if len(tags) > 0 {
+		// Get the data from the dcm file
+		dataset, err := dicom_wrapper.ParseFile(fileName)
+		if err != nil {
+			return nil, err
+		}
+
 		elem, err = dicom_wrapper.GetTags(tags, dataset)
 		if err != nil {
 			return nil, err

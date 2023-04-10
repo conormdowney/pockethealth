@@ -19,7 +19,7 @@ func HandleUpload(rw web.ResponseWriter, req *web.Request) {
 		http.Error(rw, err.Error(), http.StatusBadRequest)
 		return
 	}
-	// pass in the fiels and the tags to search for to the upload service
+	// pass in the files and the tags to search for to the upload service
 	elems, err := service.Upload(files, req.URL.Query()["tag"])
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
@@ -37,7 +37,7 @@ func HandleConvertToPng(rw web.ResponseWriter, req *web.Request) {
 		http.Error(rw, err.Error(), http.StatusBadRequest)
 		return
 	}
-	// pass in the fiels and the tags to search for to the upload service
+
 	pngs, err := service.ConvertToPng(files)
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
