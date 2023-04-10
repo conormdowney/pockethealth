@@ -14,6 +14,7 @@ PNG's are stored at C:\temp\pngs
 
 Clone the project and run main.go <br>
 The server will start up and listen on localhost:3000
+Add the files to the body with the key "files"
 
 # What to expect
 
