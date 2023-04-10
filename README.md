@@ -15,7 +15,7 @@ PNG's are stored at C:\temp\pngs
 Clone the project and run main.go <br>
 The server will start up and listen on localhost:3000
 
-# What to expext
+# What to expect
 
 After a file has been sent to the service it will do the following:
 
