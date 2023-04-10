@@ -55,6 +55,8 @@ func GetTags(queryTags []string, dataset *dicom.Dataset) (map[string]*dicom.Elem
 
 // ConvertToPng converts a dicom image to png nd stores it locally
 func ConvertToPng(dataset dicom.Dataset, uuid uuid.UUID) error {
+	// During unit tests the images are stored in a tests folder inside the pngs folder.
+	// This is to allow the tests to remove the images when they are cleaning up
 	pngDir := "C:\\temp\\pngs"
 	// When running tests, store the items in a tests folder that should be
 	// deleted after each test

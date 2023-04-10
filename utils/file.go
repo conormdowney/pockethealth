@@ -12,6 +12,8 @@ import (
 
 // UploadFile uploads a file and returns the file name
 func UploadFile(file multipart.File, fileHeader *multipart.FileHeader, uuid uuid.UUID) (string, error) {
+	// During unit tests the images are stored in a tests folder inside the uploads folder.
+	// This is to allow the tests to remove the images when they are cleaning up
 	uploadDir := "C:\\temp\\uploads"
 	if os.Getenv("TESTING") == "true" {
 		uploadDir += "\\tests"
