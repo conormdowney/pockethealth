@@ -43,3 +43,16 @@ Any other issue that arises will return a 500
 
 Unit tests exist for most classes. The service class ran into some weird race issue. I think previous go routines that were created are affecting the test result becuase the issue only arises when running the test as part of the whole test suite. Running them individually works fine. 
 
+# Code 
+
+handler.go contains the handler for the upload endpoint, in a function called HandleUpload. 
+
+The validation of the request is performed here. Ensuring the issues from the Errors section ar not wrong. It then calls the Upload function from the service layer
+
+service.go contains the business logic for the service. It creates a go routine for each file being uploaded that saves the file, extracts the data and converts the image to png.
+
+file.go handles the actual saving of the file that has been uploaded.
+
+dicom.go is a wrapper for the dicom package. It handles calls that are required to the dicom package.
+
+router.go is a wrapper around the package i used for handling web requests - gocraft/web https://github.com/gocraft/web
