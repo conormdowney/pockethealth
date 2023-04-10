@@ -31,6 +31,8 @@ passing in two files, 2.dcm and 3.dcm, to the endpoint localhost:3000/upload?tag
 
 {"2.dcm":{"0010,0020":{"tag":{"Group":16,"Element":32},"VR":0,"rawVR":"LO","valueLength":4,"value":["5184"]},"0400,0565":{"tag":{"Group":1024,"Element":1381},"VR":0,"rawVR":"CS","valueLength":8,"value":["CORRECT"]}},"3.dcm":{"0010,0020":{"tag":{"Group":16,"Element":32},"VR":0,"rawVR":"LO","valueLength":4,"value":["5184"]},"0400,0565":{"tag":{"Group":1024,"Element":1381},"VR":0,"rawVR":"CS","valueLength":8,"value":["CORRECT"]}}}
 
+3.) Convert the image to png and store at C:\temp\pngs
+
 # Errors
 
 The api will return a 400 error in the following cases:
